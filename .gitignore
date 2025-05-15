@@ -24,6 +24,15 @@ _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
 
+# JetBrains Rider
+.idea/
+.idea/**
+**/.idea/**
+.idea/.idea.*/**
+
+# Editor config
+.editorconfig
+
 # NuGet
 *.nupkg
 *.snupkg
