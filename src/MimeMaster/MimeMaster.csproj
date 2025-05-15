@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>MimeMaster</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.0-preview.1</Version>
     <Authors>Tobias Lie-Atjam</Authors>
     <Company>Mediafront</Company>
     <Description>A .NET library for MIME type detection and file validation using file signatures</Description>
