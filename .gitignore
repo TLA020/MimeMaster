@@ -1,0 +1,44 @@
+# .NET build artifacts
+bin/
+obj/
+artifacts/
+
+# Visual Studio and IDE files
+.vs/
+.vscode/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.usertasks
+*.dll
+*.pdb
+*.cache
+*.force
+*.ide
+*.lock
+*.ide-shm
+*.ide-wal
+.JetBrains/
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+*.nuget.props
+*.nuget.targets
+
+# Test Results
+TestResults/
+[Tt]est[Rr]esult*/
+*.trx
+*.log
+
+# Miscellaneous
+.DS_Store
+*.swp
+*~
+Thumbs.db
