@@ -8,8 +8,8 @@
     <Version>1.0.0-preview.1</Version>
     <Authors>Tobias Lie-Atjam</Authors>
     <Company>Mediafront</Company>
-    <Description>A .NET library for MIME type detection and file validation using file signatures</Description>
-    <PackageTags>mime;file;validation;signature;type;detection</PackageTags>
+    <Description>A fast, accurate .NET library for MIME type detection and file validation using file signatures. Features async/await support, streaming validation for large files, and memory-efficient processing.</Description>
+    <PackageTags>mime;file;validation;signature;type;detection;async;streaming;performance</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/TLA020/MimeMaster</RepositoryUrl>

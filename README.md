@@ -13,6 +13,8 @@ MimeMaster is a fast, accurate .NET library for detecting and validating file ty
 
 - 🔍 **Accurate MIME type detection** based on file signatures
 - ✅ **File validation** against allowed MIME types and size constraints
+- ⚡ **Async/await support** with cancellation tokens for high-performance applications
+- 🌊 **Streaming validation** for large files without loading them entirely into memory
 - 📦 **Support for common file formats**: PDF, Office documents, images, and more
 - 🧩 **Extensible design** for adding custom file types
 - 🔄 **Integration with .NET dependency injection**
@@ -95,6 +97,50 @@ public class MyService
 }
 ```
 
+### Async/Streaming Examples
+
+```csharp
+// Async file type detection with byte array
+var fileData = await File.ReadAllBytesAsync("path/to/file.pdf");
+var fileType = await _fileTypeService.GetMimeTypeAsync("file.pdf", fileData);
+
+// Async file type detection from stream
+using var fileStream = File.OpenRead("path/to/file.pdf");
+var fileType = await _fileTypeService.GetMimeTypeFromStreamAsync("file.pdf", fileStream);
+
+// Async validation with byte array
+var validationResult = await _validationService.ValidateAsync(
+    "file.pdf", 
+    fileData, 
+    "application/pdf,image/jpeg", 
+    maxFileSize: 10 * 1024 * 1024, // 10MB
+    cancellationToken: cancellationToken);
+
+// Async validation from stream
+using var fileStream = File.OpenRead("path/to/file.pdf");
+var validationResult = await _validationService.ValidateAsync(
+    "file.pdf", 
+    fileStream, 
+    "application/pdf,image/jpeg", 
+    maxFileSize: 10 * 1024 * 1024);
+
+// Streaming validation for large files (optimized for memory efficiency)
+using var fileStream = File.OpenRead("path/to/large-file.pdf");
+var validationResult = await _validationService.ValidateStreamAsync(
+    "large-file.pdf", 
+    fileStream, 
+    "application/pdf", 
+    maxFileSize: 100 * 1024 * 1024, // 100MB
+    cancellationToken: cancellationToken);
+```
+
+### Benefits of Streaming Validation
+
+- **Memory Efficient**: `ValidateStreamAsync` only reads file headers/trailers, not the entire file
+- **Early Exit**: For seekable streams, size validation happens before MIME type detection
+- **Large File Support**: Handle files of any size without memory constraints
+- **Cancellation Support**: All async methods support `CancellationToken` for responsive applications
+
 ## 📋 Supported File Types
 
 MimeMaster currently supports the following file types:
@@ -173,7 +219,12 @@ The library includes signatures for various file formats and can be extended to 
 ```csharp
 public interface IFileTypeService
 {
+    // Synchronous methods
     FileType GetMimeType(string fileName, byte[] fileData);
+    
+    // Asynchronous methods
+    Task<FileType> GetMimeTypeAsync(string fileName, byte[] fileData, CancellationToken cancellationToken = default);
+    Task<FileType> GetMimeTypeFromStreamAsync(string fileName, Stream stream, CancellationToken cancellationToken = default);
 }
 ```
 
@@ -182,12 +233,38 @@ public interface IFileTypeService
 ```csharp
 public interface IValidationService
 {
+    // Synchronous methods
     ValidationResult Validate(
         string fileName, 
         byte[] fileData, 
         string allowedMimeTypes, 
         long maxFileSize, 
         long minFileSize = 0);
+        
+    // Asynchronous methods
+    Task<ValidationResult> ValidateAsync(
+        string fileName, 
+        byte[] fileData, 
+        string allowedMimeTypes, 
+        long maxFileSize, 
+        long minFileSize = 0, 
+        CancellationToken cancellationToken = default);
+        
+    Task<ValidationResult> ValidateAsync(
+        string fileName, 
+        Stream stream, 
+        string allowedMimeTypes, 
+        long maxFileSize, 
+        long minFileSize = 0, 
+        CancellationToken cancellationToken = default);
+        
+    Task<ValidationResult> ValidateStreamAsync(
+        string fileName, 
+        Stream stream, 
+        string allowedMimeTypes, 
+        long maxFileSize, 
+        long minFileSize = 0, 
+        CancellationToken cancellationToken = default);
 }
 ```
 
@@ -211,7 +288,10 @@ MimeMaster is designed for high-performance applications:
 
 - ⚡ **Fast detection**: Optimized signature matching algorithms
 - 🧠 **Low memory overhead**: Minimal allocations during detection
+- 🌊 **Streaming support**: Process large files without loading them entirely into memory
 - 🔄 **Thread-safe**: Safe for concurrent use
+- ⚡ **Async/await**: Non-blocking operations with cancellation support
+- 🚀 **Early exit optimization**: Size validation happens before expensive MIME type detection
 
 ## 🤝 Contributing
 

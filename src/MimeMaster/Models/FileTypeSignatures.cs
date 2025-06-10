@@ -186,6 +186,15 @@ public static class FileSignatures
     ];
 
     /// <summary>
+    /// Gets all file signatures supported by the library
+    /// </summary>
+    /// <returns>A list of all file type signatures</returns>
+    public static List<FileTypeSignature> GetFileSignatures()
+    {
+        return _fileSignatures;
+    }
+
+    /// <summary>
     /// Identifies the file type based on its name and content by examining file signatures
     /// </summary>
     /// <param name="fileName">The name of the file, used to determine the expected file extension</param>
