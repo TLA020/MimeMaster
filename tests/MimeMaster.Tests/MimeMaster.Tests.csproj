@@ -53,6 +53,22 @@
     <Content Include="Resources\hello-world.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Remove="Resources\hello-world.gif" />
+    <Content Include="Resources\hello-world.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Resources\hello-world.avi" />
+    <Content Include="Resources\hello-world.avi">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Resources\hello-world.mp4" />
+    <Content Include="Resources\hello-world.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Resources\hello-world.webm" />
+    <Content Include="Resources\hello-world.webm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

@@ -63,15 +63,23 @@ public static class FileSignatures
             ]
         },
 
+        new FileTypeSignature
+        {
+            Extension = ".GIF",
+            MimeType = "image/gif",
+            Headers = [new Signature([0x47, 0x49, 0x46, 0x38])]
+        },
 
         new FileTypeSignature
         {
             Extension = ".DOC",
             MimeType = "application/msword",
-            Headers = [new Signature([0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1])]
+            Headers = 
+            [
+                new Signature([0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1])
+            ]
         },
-
-
+        
         new FileTypeSignature
         {
             Extension = ".PDF",
@@ -135,8 +143,28 @@ public static class FileSignatures
             MimeType = "video/mp4",
             Headers =
             [
-                new Signature([0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6F, 0x6D])
+                new Signature([0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6F, 0x6D]),
+            ],
+            CustomSignatureDetector = IsMp4File
+        },
+        
+        new FileTypeSignature
+        {
+            Extension = ".AVI",
+            MimeType = "video/avi",
+            Headers = 
+            [
+                new Signature([0x52, 0x49, 0x46, 0x46]), // RIFF
+                new Signature([0x41, 0x56, 0x49, 0x20])  // AVI
             ]
+        },
+        
+        new FileTypeSignature
+        {
+            Extension = ".WEBM",
+            MimeType = "video/webm",
+            Headers = [],
+            CustomSignatureDetector = IsWebm
         },
 
         new FileTypeSignature
@@ -258,7 +286,49 @@ public static class FileSignatures
                 }
             }
         }
+        
+        // Custom handling
+        if (fileTypeSignature.CustomSignatureDetector != null && fileTypeSignature.CustomSignatureDetector(data))
+        {
+            return fileTypeSignature;
+        }
 
         return null;
+    }
+    
+    private static bool IsMp4File(byte[] data)
+    {
+        if (data.Length < 12)
+        {
+            return false;
+        }
+        
+        // Check for "ftyp" at bytes 4-7
+        var hasFtyp = data[4] == 0x66 && data[5] == 0x74 && data[6] == 0x79 && data[7] == 0x70;
+
+        if (!hasFtyp)
+        {
+            return false;
+        }
+
+        // Check common MP4 brand identifiers at bytes 8-11
+        string brand = Encoding.ASCII.GetString(data, 8, 4);
+    
+        // Common MP4 brands
+        string[] mp4Brands = { "isom", "iso2", "mp41", "mp42", "M4V ", "M4A ", "M4P ", "mmp4", "avc1" };
+    
+        return mp4Brands.Contains(brand);
+    }
+
+    private static bool IsWebm(byte[] data)
+    {
+        var hasEbmlSignature = data[0] == 0x1A && data[1] == 0x45 && data[2] == 0xDF && data[3] == 0xA3;
+        if (!hasEbmlSignature)
+        {
+            return false;
+        }
+        
+        var headerText = Encoding.ASCII.GetString(data);
+        return headerText.Contains("webm");
     }
 }

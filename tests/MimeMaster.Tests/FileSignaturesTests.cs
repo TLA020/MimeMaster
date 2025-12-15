@@ -14,6 +14,10 @@ public class FileSignaturesTests
     [InlineData("hello-world.ppt", ".PPT")]
     [InlineData("hello-world.xls", ".XLS")]
     [InlineData("hello-world.xlsx", ".XLSX")]
+    [InlineData("hello-world.gif", ".GIF")]
+    [InlineData("hello-world.avi", ".AVI")]
+    [InlineData("hello-world.mp4", ".MP4")]
+    [InlineData("hello-world.webm", ".WEBM")]
     public void GetFileType_ValidFile_ReturnsCorrectFileType(string fileName, string expectedExtension)
     {
         var filePath = Path.Combine("Resources", fileName);

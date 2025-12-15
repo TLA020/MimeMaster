@@ -30,4 +30,9 @@ public class FileTypeSignature
     /// particularly useful for archive-based formats like Office Open XML
     /// </summary>
     public string? ContentSniffTarget { get; init; }
+
+    /// <summary>
+    /// Gets or sets a custom handler method to determine the file type signature.
+    /// </summary>
+    public Func<byte[], bool>? CustomSignatureDetector { get; init; } = null;
 }
